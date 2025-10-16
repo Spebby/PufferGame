@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1688795089262669122}
   - component: {fileID: 1885045254837421072}
   - component: {fileID: 7595721589437045272}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Water Blob
   m_TagString: Water Blob
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f819c9e0cc90af743823f3c5e0218429, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

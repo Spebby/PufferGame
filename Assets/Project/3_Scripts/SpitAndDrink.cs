@@ -3,36 +3,36 @@ using UnityEngine.InputSystem;
 
 public class SpitAndDrink : MonoBehaviour
 {
-    [SerializeField] InputActionReference spitAction;
-	[SerializeField] GameObject waterBlobPrefab;
-	[SerializeField] float spitForce = 5.0f;
-	[SerializeField] float propulsionForce = 1.0f;
-    Rigidbody2D rb;
+    [SerializeField] private InputActionReference _spitAction;
+	[SerializeField] private GameObject _waterBlobPrefab;
+	[SerializeField] private float _spitForce = 5.0f;
+	[SerializeField] private float _propulsionForce = 1.0f;
+    private Rigidbody2D _rigidBody2D;
 
 	private void Awake()
 	{
-		rb = GetComponent<Rigidbody2D>();
+		_rigidBody2D = GetComponent<Rigidbody2D>();
 	}
 
 	private void OnEnable()
 	{
-		spitAction.action.Enable();
-		spitAction.action.performed += Spit;
+		_spitAction.action.Enable();
+		_spitAction.action.performed += Spit;
 	}
 	private void OnDisable()
 	{
-		spitAction.action.Disable();
-		spitAction.action.performed -= Spit;
+		_spitAction.action.Disable();
+		_spitAction.action.performed -= Spit;
 	}
 
-	private void Spit(InputAction.CallbackContext context)
+	private void Spit(InputAction.CallbackContext _)
 	{
-		Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-		Vector2 spitDirection = (mousePosition - (Vector2)transform.position).normalized;
+		Vector2 mousePosition2D = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+		Vector2 spitDirection2D = (mousePosition2D - (Vector2)transform.position).normalized;
 
-		GameObject waterBlob = Instantiate(waterBlobPrefab, transform.position, Quaternion.identity);
-		waterBlob.GetComponent<Rigidbody2D>().AddForce(spitDirection * spitForce, ForceMode2D.Impulse);
+		GameObject waterBlobGameObject = Instantiate(_waterBlobPrefab, transform.position, Quaternion.identity);
+		waterBlobGameObject.GetComponent<Rigidbody2D>().AddForce(spitDirection2D * _spitForce, ForceMode2D.Impulse);
 
-		rb.AddForce(-spitDirection * propulsionForce, ForceMode2D.Impulse);
+		_rigidBody2D.AddForce(-spitDirection2D * _propulsionForce, ForceMode2D.Impulse);
 	}
 }

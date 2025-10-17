@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8575057120794985779}
   - component: {fileID: 6154029381129783367}
   - component: {fileID: 3293400351841048691}
+  - component: {fileID: 8750685802539977948}
   - component: {fileID: 5991979191757897600}
   m_Layer: 6
   m_Name: Player
@@ -84,7 +85,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0.25
+  m_LinearDamping: 1.5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -98,6 +99,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8750685802539977948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6636222903390142534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1da4d90d15a6b354198f90cf1964a151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementController
+  _moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  _moveForce: 5
 --- !u!114 &5991979191757897600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,10 +125,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231ac87c50a4eb54184b21faec06619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpitAndDrink
-  spitAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
-  spitForce: 10
-  propulsionForce: 1
+  _spitAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  _waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
+  _spitForce: 10
+  _propulsionForce: 5
 --- !u!1 &8317760632312607591
 GameObject:
   m_ObjectHideFlags: 0

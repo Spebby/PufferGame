@@ -425,6 +425,7 @@ Transform:
   - {fileID: 1165149801}
   - {fileID: 1409044397}
   - {fileID: 1747993801}
+  - {fileID: 9036320056621863120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1409044396
@@ -764,7 +765,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1398008341}
     m_Modifications:
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -772,7 +773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -784,15 +785,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -827,11 +828,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
+--- !u!4 &9036320056621863120 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 618713710630558818, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
+  m_PrefabInstance: {fileID: 9036320056621863119}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 5324890724396969593}
-  - {fileID: 9036320056621863119}
   - {fileID: 1398008341}

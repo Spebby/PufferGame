@@ -8,6 +8,9 @@ public class PlayerMovementController : MonoBehaviour
 	private Vector2 _moveDirection2D;
 	[SerializeField] private float _moveForce;
 
+	private bool _canMove = false;
+	[SerializeField] private float _inAirGravity = 1f;
+
 	private void Awake()
 	{
 		_rigidBody2D = GetComponent<Rigidbody2D>();
@@ -33,6 +36,28 @@ public class PlayerMovementController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (!_canMove)
+		{
+			return;
+		}
+
 		_rigidBody2D.AddForce(_moveDirection2D * _moveForce);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Water Pool"))
+		{
+			_rigidBody2D.gravityScale = 0f;
+			_canMove = true;
+		}
+	}
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Water Pool"))
+		{
+			_rigidBody2D.gravityScale = _inAirGravity;
+			_canMove = false;
+		}
 	}
 }

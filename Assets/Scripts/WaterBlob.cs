@@ -4,7 +4,7 @@ public class WaterBlob : MonoBehaviour
 {
     [SerializeField] float volume = 1.0f;
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.CompareTag("Water Pool"))
 		{

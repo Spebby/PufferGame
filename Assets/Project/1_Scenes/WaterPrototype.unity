@@ -810,6 +810,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water Pool
       objectReference: {fileID: 0}
+    - target: {fileID: 3032145639220563008, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6141537696055387767, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
+      propertyPath: _width
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143735548229907390, guid: 0a9450febb5d96348906f30e6c94de4e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

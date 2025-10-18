@@ -8,7 +8,7 @@ public class WaterBlob : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Water Pool"))
 		{
-			collision.gameObject.GetComponent<WaterPool>().AddVolume(volume);
+			collision.gameObject.GetComponentInParent<WaterPool>().AddVolume(volume);
 			Destroy(gameObject);
 		}
 	}

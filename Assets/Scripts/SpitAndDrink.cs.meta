@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 231ac87c50a4eb54184b21faec06619c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _spitAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  - _waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -45,13 +45,34 @@ public class WaterPool : MonoBehaviour
 	}
 
 	public void AddVolume(float amount)
-    {
-        _volume += amount;
+	{
+		_volume += amount;
 		SetHeight(_volume * _volumeToHeightRatio);
 	}
+	public void ReduceVolume(float amount)
+	{
+		if (_volume > 0)
+		{
+			_volume -= amount;
+			SetHeight(_volume * _volumeToHeightRatio);
+		}
+	}
+	public bool HasWater()
+    {
+		return _volume > 0;
+    }
+
 	private void SetHeight(float height)
 	{
 		_spriteRootTransform.localScale = new Vector3(_width, height, 1f);
 		_colliderTransform.localScale = new Vector3(_width, Mathf.Max(_minColliderHeight, height), 1f);
 	}
+
+    void Update()
+    {
+        if (_volume < 0)
+        {
+			_volume = 0;
+        }
+    }
 }

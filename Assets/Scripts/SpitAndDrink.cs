@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 
 
 public class SpitAndDrink : MonoBehaviour {
-	PlayerMovementController player;
-	PlayerScale scale;
+	PlayerMovementController _player;
+	PlayerScale _scale;
 	Rigidbody2D _rigidBody2D;
 	
     [SerializeField] InputActionReference spitAction;
@@ -18,6 +18,7 @@ public class SpitAndDrink : MonoBehaviour {
 	[SerializeField] GameObject waterBlobPrefab;
 	[SerializeField] float spitForce = 10f;
 	[SerializeField] float propulsionForce = 5f;
+	[SerializeField] float spitCost = 0.1f;
 
 	[SerializeField] float maxChargeTime;
 
@@ -29,7 +30,8 @@ public class SpitAndDrink : MonoBehaviour {
 	
 	
 	void Awake() {
-		player       = GetComponent<PlayerMovementController>();
+		_player      = GetComponent<PlayerMovementController>();
+		_scale       = GetComponent<PlayerScale>();
 		_rigidBody2D = GetComponent<Rigidbody2D>();
 	}
 
@@ -79,11 +81,18 @@ public class SpitAndDrink : MonoBehaviour {
 	}
 	
 	void Spit(float charge) {
+		float cost = charge * maxWater * spitCost;
+		if (_waterAmount < cost) return;
+		
 		Vector2 aim = (Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position).normalized;
-		GameObject waterBlobGameObject = Instantiate(waterBlobPrefab, transform.position, Quaternion.identity);
-		waterBlobGameObject.GetComponent<Rigidbody2D>().AddForce(aim * spitForce * charge, ForceMode2D.Impulse);
+		GameObject blob = Instantiate(waterBlobPrefab, transform.position + (Vector3)aim * gameObject.transform.localScale.x * 1f, Quaternion.identity);
+		
+		blob.GetComponent<WaterBlob>().Initialise(cost);
+		blob.GetComponent<Rigidbody2D>().AddForce(aim * spitForce * charge, ForceMode2D.Impulse);
 
+		_waterAmount -= cost;
 		_rigidBody2D.AddForce(-aim * propulsionForce * charge, ForceMode2D.Impulse);
+		_scale.ModifyScale(-cost);
 	}
 
 	void ToggleDrink(InputAction.CallbackContext _) {
@@ -91,10 +100,14 @@ public class SpitAndDrink : MonoBehaviour {
 	}
 
 	void Drink() {
-		WaterPool pool = player.GetWaterPool();
-		if (pool && !pool.HasWater()) return;
-		float amount = pool.ReduceVolume(waterGainRate * Time.deltaTime);
+		float cap = maxWater - _waterAmount;
+		if (cap < Mathf.Epsilon) return;
+		
+		WaterPool pool = _player.GetWaterPool();
+		// do a check on if player can actually drink more water
+		if (!pool || !pool.HasWater()) return;
+		float amount = pool.ReduceVolume(Mathf.Min(waterGainRate * Time.deltaTime, cap));
 		_waterAmount += amount;
-		scale.IncreaseScale(amount);
+		_scale.ModifyScale(amount);
 	}
 }

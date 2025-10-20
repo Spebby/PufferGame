@@ -6,7 +6,7 @@ public class PlayerMovementController : MonoBehaviour {
     Rigidbody2D _rigidBody2D;
     [SerializeField] InputActionReference moveAction;
     Vector2 _moveDirection2D;
-    [SerializeField] float moveForce;
+    [SerializeField] float moveForce = 1f;
 
     bool _canMove;
     [SerializeField] float inAirGravity = 1f;
@@ -45,7 +45,7 @@ public class PlayerMovementController : MonoBehaviour {
         _rigidBody2D.gravityScale = 0f;
         _canMove                  = true;
         InWater                   = true;
-        _waterPool                = collision.gameObject.GetComponent<WaterPool>();
+        _waterPool                = collision.gameObject.GetComponentInParent<WaterPool>();
     }
 
     void OnTriggerExit2D(Collider2D collision) {

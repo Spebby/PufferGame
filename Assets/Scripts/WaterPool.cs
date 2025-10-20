@@ -43,16 +43,16 @@ public class WaterPool : MonoBehaviour {
 	
 	public bool HasWater(float amount = 0) => _volume >= amount;
 
-	public void AddVolume(float amount) {
-		_volume += amount;
+	public void AddVolume(float delta) {
+		_volume += delta;
 		SetSpriteHeight(_volume * _volumeToHeightRatio);
 	}
 
-	public float ReduceVolume(float amount) {
-		float reduction = Mathf.Min(amount, _volume);
+	public float ReduceVolume(float delta) {
+		float reduction = Mathf.Min(delta, _volume);
 		_volume -= reduction;
 		SetSpriteHeight(_volume * _volumeToHeightRatio);
-		return amount - reduction;
+		return reduction;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

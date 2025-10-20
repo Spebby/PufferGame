@@ -18,11 +18,13 @@ public class SpitAndDrink : MonoBehaviour
 	[SerializeField] private float _propulsionForce = 1.0f;
 	private Rigidbody2D _rigidBody2D;
 	private PlayerMovementController _player;
+	private PlayerScale _scale;
 
 	private void Awake()
 	{
 		_rigidBody2D = GetComponent<Rigidbody2D>();
 		_player = GetComponent<PlayerMovementController>();
+		_scale = GetComponent<PlayerScale>();
 	}
 
     private void Update()
@@ -74,7 +76,7 @@ public class SpitAndDrink : MonoBehaviour
 	
 	private void Drink()
 	{
-		GameObject toDrink = _player.getWaterPool();
+		GameObject toDrink = _player.GetWaterPool();
 		if (toDrink == null) return;
 		if (toDrink.CompareTag("Water Pool") == false) return;
 		WaterPool pool = toDrink.GetComponentInParent<WaterPool>();
@@ -85,10 +87,21 @@ public class SpitAndDrink : MonoBehaviour
 			{
 				_waterAmount += _waterIncrease * 5.0f;
 				pool.ReduceVolume(_waterIncrease);
+				_scale.IncreaseScale(_waterIncrease * 5.0f);
 				timer = 0.0f;
 				Debug.Log(_waterAmount);
 			}
 		}
-		else { Debug.Log("No pool found"); }	
+		else
+        {
+			if (_waterAmount == _maxWater)
+			{
+				Debug.Log("Water limit reached");
+			}
+			else
+            {
+				Debug.Log("Pool not found");
+            }
+        }	
     }
 }

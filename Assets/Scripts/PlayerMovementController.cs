@@ -1,71 +1,62 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementController : MonoBehaviour
-{
-	private Rigidbody2D _rigidBody2D;
-	[SerializeField] private InputActionReference _moveAction;
-	private Vector2 _moveDirection2D;
-	[SerializeField] private float _moveForce;
 
-	private bool _canMove = false;
-	[SerializeField] private float _inAirGravity = 1f;
-	private GameObject _waterPool;
+public class PlayerMovementController : MonoBehaviour {
+    Rigidbody2D _rigidBody2D;
+    [SerializeField] InputActionReference moveAction;
+    Vector2 _moveDirection2D;
+    [SerializeField] float moveForce = 1f;
 
-	private void Awake()
-	{
-		_rigidBody2D = GetComponent<Rigidbody2D>();
-	}
+    bool _canMove;
+    [SerializeField] float inAirGravity = 1f;
 
-	private void OnEnable()
-	{
-		_moveAction.action.Enable();
-		_moveAction.action.performed += OnMove;
-		_moveAction.action.canceled += OnMove;
-	}
-	private void OnDisable()
-	{
-		_moveAction.action.Disable();
-		_moveAction.action.performed -= OnMove;
-		_moveAction.action.canceled -= OnMove;
-	}
+    public bool InWater { get; private set; }
+    WaterPool _waterPool; // :(
 
-	private void OnMove(InputAction.CallbackContext context)
-	{
-		_moveDirection2D = context.ReadValue<Vector2>();
-	}
+    void Awake() {
+        _rigidBody2D = GetComponent<Rigidbody2D>();
+    }
 
-	private void FixedUpdate()
-	{
-		if (!_canMove)
-		{
-			return;
-		}
+    void OnEnable() {
+        moveAction.action.Enable();
+        moveAction.action.performed += OnMove;
+        moveAction.action.canceled  += OnMove;
+    }
 
-		_rigidBody2D.AddForce(_moveDirection2D * _moveForce);
-	}
+    void OnDisable() {
+        moveAction.action.Disable();
+        moveAction.action.performed -= OnMove;
+        moveAction.action.canceled  -= OnMove;
+    }
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.gameObject.CompareTag("Water Pool"))
-		{
-			_rigidBody2D.gravityScale = 0f;
-			_canMove = true;
-			_waterPool = collision.gameObject;
-		}
-	}
-	private void OnTriggerExit2D(Collider2D collision)
-	{
-		if (collision.gameObject.CompareTag("Water Pool"))
-		{
-			_rigidBody2D.gravityScale = _inAirGravity;
-			_canMove = false;
-			_waterPool = null;
-		}
-	}
-	
-	public GameObject GetWaterPool()
-    {
-		return _waterPool;
+    void OnMove(InputAction.CallbackContext context) {
+        _moveDirection2D = context.ReadValue<Vector2>();
+    }
+
+    void FixedUpdate() {
+        if (!_canMove) return;
+        _rigidBody2D.AddForce(_moveDirection2D * moveForce);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        // fyi layer is better than comparing to tag.
+        if (!collision.gameObject.CompareTag("Water Pool")) return;
+        _rigidBody2D.gravityScale = 0f;
+        _canMove                  = true;
+        InWater                   = true;
+        _waterPool                = collision.gameObject.GetComponentInParent<WaterPool>();
+    }
+
+    void OnTriggerExit2D(Collider2D collision) {
+        if (!collision.gameObject.CompareTag("Water Pool")) return;
+        _rigidBody2D.gravityScale = inAirGravity;
+        _canMove                  = false;
+        InWater                   = false;
+        _waterPool                = null;
+    }
+
+    public WaterPool GetWaterPool() {
+        return _waterPool;
     }
 }

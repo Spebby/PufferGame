@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3293400351841048691}
   - component: {fileID: 8750685802539977948}
   - component: {fileID: 5991979191757897600}
+  - component: {fileID: 6716538166046637139}
+  - component: {fileID: 6276870863288418180}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -111,9 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da4d90d15a6b354198f90cf1964a151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementController
-  _moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  _moveForce: 5
-  _inAirGravity: 1
+  moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  moveForce: 1.5
+  inAirGravity: 1
 --- !u!114 &5991979191757897600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,10 +128,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231ac87c50a4eb54184b21faec06619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpitAndDrink
-  _spitAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  _waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
-  _spitForce: 10
-  _propulsionForce: 5
+  spitAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  drinkAction: {fileID: -1343084429727649444, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  waterGainRate: 2
+  maxWater: 10
+  waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
+  spitForce: 15
+  propulsionForce: 50
+  spitCost: 0.1
+  maxChargeTime: 2
+--- !u!114 &6716538166046637139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6636222903390142534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0487568e91a13764aa367112396ac047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScale
+  _maxScale: 2
+  _minScale: 1
+--- !u!114 &6276870863288418180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6636222903390142534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bbe411a30fdc141a50a0cbf5e85a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Suffocation
+  maxTime: 10
 --- !u!1 &8317760632312607591
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +242,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.93207544, g: 0.72310656, b: 0, a: 1}
   m_FlipX: 0

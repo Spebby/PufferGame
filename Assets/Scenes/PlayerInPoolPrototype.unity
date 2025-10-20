@@ -535,14 +535,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8575057120794985779, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575057120794985779, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575057120794985779, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -585,30 +577,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6636222903390142534, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1168716861}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
---- !u!1 &1168716860 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6636222903390142534, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-  m_PrefabInstance: {fileID: 1168716859}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1168716861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1168716860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0487568e91a13764aa367112396ac047, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerScale
-  _maxScale: 2
-  _minScale: 1
 --- !u!1 &1299133659
 GameObject:
   m_ObjectHideFlags: 0

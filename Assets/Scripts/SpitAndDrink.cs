@@ -1,107 +1,113 @@
-using System;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpitAndDrink : MonoBehaviour
-{
-	[SerializeField] private InputActionReference _spitAction;
-	[SerializeField] private InputActionReference _drinkAction;
-	[SerializeField] private GameObject _waterBlobPrefab;
-	private bool _isDrinking = false;
-	[SerializeField] private float _waterAmount = 0.0f;
-	[SerializeField] private float _waterIncrease = 1.0f;
-	[SerializeField] private float _maxWater = 100.0f;
-	private float timer = 0.0f;
-	private float incrementDelay = 0.05f;
-	[SerializeField] private float _spitForce = 5.0f;
-	[SerializeField] private float _propulsionForce = 1.0f;
-	private Rigidbody2D _rigidBody2D;
-	private PlayerMovementController _player;
-	private PlayerScale _scale;
 
-	private void Awake()
-	{
+public class SpitAndDrink : MonoBehaviour {
+	PlayerMovementController _player;
+	PlayerScale _scale;
+	Rigidbody2D _rigidBody2D;
+	
+    [SerializeField] InputActionReference spitAction;
+    [SerializeField] InputActionReference drinkAction;
+
+    float _waterAmount;
+    [SerializeField, Tooltip("Units per-second")] float waterGainRate = 5f;
+    [SerializeField] float maxWater = 100f;
+    
+    [Header("Spitting Behaviour")]
+	[SerializeField] GameObject waterBlobPrefab;
+	[SerializeField] float spitForce = 10f;
+	[SerializeField] float propulsionForce = 5f;
+	[SerializeField] float spitCost = 0.1f;
+
+	[SerializeField] float maxChargeTime;
+
+	bool _isCharging;
+	float _chargeTime;
+
+	[Header("Drinking Behaviour")]
+	bool _isDrinking;
+	
+	
+	void Awake() {
+		_player      = GetComponent<PlayerMovementController>();
+		_scale       = GetComponent<PlayerScale>();
 		_rigidBody2D = GetComponent<Rigidbody2D>();
-		_player = GetComponent<PlayerMovementController>();
-		_scale = GetComponent<PlayerScale>();
 	}
 
-    private void Update()
-    {
-		if (_isDrinking)
-		{
-			Drink();
+	void Update() {
+		if (!_isDrinking || _waterAmount >= maxWater) return;
+		
+		Drink();
+		if (_waterAmount > maxWater) {
+			_waterAmount = maxWater;
 		}
-		if (_waterAmount > _maxWater)
-        {
-			_waterAmount = _maxWater;
-        }
-    }
-
-    private void OnEnable()
-	{
-		_spitAction.action.Enable();
-		_spitAction.action.performed += Spit;
-
-		_drinkAction.action.Enable();
-		_drinkAction.action.performed += ToggleDrink;
-		_drinkAction.action.canceled += ToggleDrink;
-	}
-	private void OnDisable()
-	{
-		_spitAction.action.Disable();
-		_spitAction.action.performed -= Spit;
-
-		_drinkAction.action.Disable();
-		_drinkAction.action.performed -= ToggleDrink;
-		_drinkAction.action.canceled -= ToggleDrink;
 	}
 
-	private void Spit(InputAction.CallbackContext _)
-	{
-		Vector2 mousePosition2D = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-		Vector2 spitDirection2D = (mousePosition2D - (Vector2)transform.position).normalized;
+	void OnEnable() {
+		spitAction.action.Enable();
+		spitAction.action.performed += Charge;
+		spitAction.action.canceled  += Release;
 
-		GameObject waterBlobGameObject = Instantiate(_waterBlobPrefab, transform.position, Quaternion.identity);
-		waterBlobGameObject.GetComponent<Rigidbody2D>().AddForce(spitDirection2D * _spitForce, ForceMode2D.Impulse);
-
-		_rigidBody2D.AddForce(-spitDirection2D * _propulsionForce, ForceMode2D.Impulse);
+		drinkAction.action.Enable();
+		drinkAction.action.performed += ToggleDrink;
+		drinkAction.action.canceled  += ToggleDrink;
 	}
 
-	private void ToggleDrink(InputAction.CallbackContext _)
-	{
-		_isDrinking = !_isDrinking;
+	void OnDisable() {
+		spitAction.action.Disable();
+		spitAction.action.performed -= Charge;
+		spitAction.action.canceled  -= Release;
+		
+		drinkAction.action.Disable();
+		drinkAction.action.performed -= ToggleDrink;
+		drinkAction.action.canceled  -= ToggleDrink;
+	}
+
+	void FixedUpdate() {
+		if (!_isCharging) return;
+		_chargeTime+= Time.fixedDeltaTime;
+	}
+
+	void Charge(InputAction.CallbackContext context) {
+		_chargeTime = 0f;
+		_isCharging = true;
+	}
+
+	void Release(InputAction.CallbackContext context) {
+		_isCharging = false;
+		float finalCharge = Mathf.Clamp(_chargeTime, 0.1f, maxChargeTime) / maxChargeTime;
+		Spit(finalCharge);
 	}
 	
-	private void Drink()
-	{
-		GameObject toDrink = _player.GetWaterPool();
-		if (toDrink == null) return;
-		if (toDrink.CompareTag("Water Pool") == false) return;
-		WaterPool pool = toDrink.GetComponentInParent<WaterPool>();
-		if (pool != null && _waterAmount < _maxWater && pool.HasWater() == true)
-		{
-			timer += Time.deltaTime;
-			if (timer > incrementDelay)
-			{
-				_waterAmount += _waterIncrease * 5.0f;
-				pool.ReduceVolume(_waterIncrease);
-				_scale.IncreaseScale(_waterIncrease * 5.0f);
-				timer = 0.0f;
-				Debug.Log(_waterAmount);
-			}
-		}
-		else
-        {
-			if (_waterAmount == _maxWater)
-			{
-				Debug.Log("Water limit reached");
-			}
-			else
-            {
-				Debug.Log("Pool not found");
-            }
-        }	
-    }
+	void Spit(float charge) {
+		float cost = charge * maxWater * spitCost;
+		if (_waterAmount < cost) return;
+		
+		Vector2 aim = (Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position).normalized;
+		GameObject blob = Instantiate(waterBlobPrefab, transform.position + (Vector3)aim * gameObject.transform.localScale.x * 1f, Quaternion.identity);
+		
+		blob.GetComponent<WaterBlob>().Initialise(cost);
+		blob.GetComponent<Rigidbody2D>().AddForce(aim * spitForce * charge, ForceMode2D.Impulse);
+
+		_waterAmount -= cost;
+		_rigidBody2D.AddForce(-aim * propulsionForce * charge, ForceMode2D.Impulse);
+		_scale.ModifyScale(-cost);
+	}
+
+	void ToggleDrink(InputAction.CallbackContext _) {
+		_isDrinking = !_isDrinking;
+	}
+
+	void Drink() {
+		float cap = maxWater - _waterAmount;
+		if (cap < Mathf.Epsilon) return;
+		
+		WaterPool pool = _player.GetWaterPool();
+		// do a check on if player can actually drink more water
+		if (!pool || !pool.HasWater()) return;
+		float amount = pool.ReduceVolume(Mathf.Min(waterGainRate * Time.deltaTime, cap));
+		_waterAmount += amount;
+		_scale.ModifyScale(amount);
+	}
 }

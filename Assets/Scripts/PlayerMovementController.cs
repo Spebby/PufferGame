@@ -9,7 +9,6 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] private float _moveForce;
 
 	private bool _canMove = false;
-	[SerializeField] private bool _inWater = false;
 	[SerializeField] private float _inAirGravity = 1f;
 	private GameObject _waterPool;
 
@@ -52,7 +51,6 @@ public class PlayerMovementController : MonoBehaviour
 		{
 			_rigidBody2D.gravityScale = 0f;
 			_canMove = true;
-			_inWater = true;
 			_waterPool = collision.gameObject;
 		}
 	}
@@ -62,17 +60,11 @@ public class PlayerMovementController : MonoBehaviour
 		{
 			_rigidBody2D.gravityScale = _inAirGravity;
 			_canMove = false;
-			_inWater = false;
 			_waterPool = null;
 		}
 	}
-
-	public bool isInWater()
-	{
-		return _inWater;
-	}
 	
-	public GameObject getWaterPool()
+	public GameObject GetWaterPool()
     {
 		return _waterPool;
     }

@@ -11,6 +11,9 @@ public class PlayerMovementController : MonoBehaviour {
     bool _canMove;
     [SerializeField] float inAirGravity = 1f;
 
+    public bool inWater { get; private set; }
+    WaterPool waterPool; // :(
+
     void Awake() {
         _rigidBody2D = GetComponent<Rigidbody2D>();
     }
@@ -40,11 +43,19 @@ public class PlayerMovementController : MonoBehaviour {
         if (!collision.gameObject.CompareTag("Water Pool")) return;
         _rigidBody2D.gravityScale = 0f;
         _canMove                  = true;
+        inWater                   = true;
+        waterPool                 = collision.gameObject.GetComponent<WaterPool>();
     }
 
     void OnTriggerExit2D(Collider2D collision) {
         if (!collision.gameObject.CompareTag("Water Pool")) return;
         _rigidBody2D.gravityScale = inAirGravity;
         _canMove                  = false;
+        inWater                   = false;
+        waterPool                 = null; // why
+    }
+
+    public WaterPool GetWaterPool() {
+        return waterPool;
     }
 }

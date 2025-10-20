@@ -9,4 +9,6 @@ public class WaterBlob : MonoBehaviour
 	    collision.gameObject.GetComponentInParent<WaterPool>().AddVolume(volume);
 	    Destroy(gameObject);
     }
+    // this is fine but it does not conserve mass. Not really possible for us to solve this unless we
+    // actually simulate fluids
 }

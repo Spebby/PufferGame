@@ -11,8 +11,8 @@ public class PlayerMovementController : MonoBehaviour {
     bool _canMove;
     [SerializeField] float inAirGravity = 1f;
 
-    public bool inWater { get; private set; }
-    WaterPool waterPool; // :(
+    public bool InWater { get; private set; }
+    WaterPool _waterPool; // :(
 
     void Awake() {
         _rigidBody2D = GetComponent<Rigidbody2D>();
@@ -40,22 +40,23 @@ public class PlayerMovementController : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
+        // fyi layer is better than comparing to tag.
         if (!collision.gameObject.CompareTag("Water Pool")) return;
         _rigidBody2D.gravityScale = 0f;
         _canMove                  = true;
-        inWater                   = true;
-        waterPool                 = collision.gameObject.GetComponent<WaterPool>();
+        InWater                   = true;
+        _waterPool                = collision.gameObject.GetComponent<WaterPool>();
     }
 
     void OnTriggerExit2D(Collider2D collision) {
         if (!collision.gameObject.CompareTag("Water Pool")) return;
         _rigidBody2D.gravityScale = inAirGravity;
         _canMove                  = false;
-        inWater                   = false;
-        waterPool                 = null; // why
+        InWater                   = false;
+        _waterPool                = null;
     }
 
     public WaterPool GetWaterPool() {
-        return waterPool;
+        return _waterPool;
     }
 }

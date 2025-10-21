@@ -297,17 +297,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de874e75e895d8f4ca1eb59d5a627189, type: 3}
---- !u!114 &1261697568 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8200687573060223862, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-  m_PrefabInstance: {fileID: 2089701263}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1380471386
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +388,7 @@ GameObject:
   - component: {fileID: 1611884587}
   - component: {fileID: 1611884586}
   - component: {fileID: 1611884589}
+  - component: {fileID: 1611884590}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -524,6 +514,19 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1611884590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611884585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b3efd79497212e17825f4a0608d52e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  panSpeed: 2
 --- !u!1001 &2089701263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -532,10 +535,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5991979191757897600, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
-      propertyPath: chargeSlider
-      value: 
-      objectReference: {fileID: 1261697568}
     - target: {fileID: 6636222903390142534, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
       propertyPath: m_Name
       value: Player

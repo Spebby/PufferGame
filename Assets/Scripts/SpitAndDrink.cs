@@ -23,6 +23,7 @@ public class SpitAndDrink : MonoBehaviour {
 	[SerializeField] float propulsionForce = 5f;
 	[SerializeField] float spitCost = 0.1f;
 
+	[SerializeField, Range(0f, 1f)] float minSpitSize = 0.2f;
 	[SerializeField] float maxChargeTime;
 
 	bool _isCharging;
@@ -92,7 +93,7 @@ public class SpitAndDrink : MonoBehaviour {
 		if (!_isCharging) return;
 		_isCharging = false;
 		chargeSlider.fillAmount = 0;
-		float finalCharge = Mathf.Clamp(_chargeTime, 0.1f, maxChargeTime) / maxChargeTime;
+		float finalCharge = Mathf.Clamp(_chargeTime, maxChargeTime * minSpitSize, maxChargeTime) / maxChargeTime;
 		Spit(finalCharge);
 	}
 	

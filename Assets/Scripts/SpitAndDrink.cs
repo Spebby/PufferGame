@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class SpitAndDrink : MonoBehaviour {
@@ -10,9 +12,10 @@ public class SpitAndDrink : MonoBehaviour {
     [SerializeField] InputActionReference spitAction;
     [SerializeField] InputActionReference drinkAction;
 
+    [Header("Shared Behaviour")]
     float _waterAmount;
-    [SerializeField, Tooltip("Units per-second")] float waterGainRate = 5f;
     [SerializeField] float maxWater = 100f;
+    [SerializeField, Range(0f, 1f)] float startWaterRatio = 0.25f;
     
     [Header("Spitting Behaviour")]
 	[SerializeField] GameObject waterBlobPrefab;
@@ -20,19 +23,29 @@ public class SpitAndDrink : MonoBehaviour {
 	[SerializeField] float propulsionForce = 5f;
 	[SerializeField] float spitCost = 0.1f;
 
+	[SerializeField, Range(0f, 1f)] float minSpitSize = 0.2f;
 	[SerializeField] float maxChargeTime;
 
 	bool _isCharging;
 	float _chargeTime;
 
-	[Header("Drinking Behaviour")]
-	bool _isDrinking;
 	
+	[Header("Drinking Behaviour")]
+	[SerializeField, Tooltip("Units per-second")] float waterGainRate = 5f;
+	bool _isDrinking;
+
+	[Header("UI")]
+	[SerializeField] Image chargeSlider;
 	
 	void Awake() {
 		_player      = GetComponent<PlayerMovementController>();
 		_scale       = GetComponent<PlayerScale>();
 		_rigidBody2D = GetComponent<Rigidbody2D>();
+		chargeSlider.fillAmount = 0f;
+		_waterAmount = maxWater * startWaterRatio;
+		
+		// this is rigid but should work ok. the scale script is the main problem here.
+		_scale.ModifyScale(_waterAmount);
 	}
 
 	void Update() {
@@ -46,8 +59,8 @@ public class SpitAndDrink : MonoBehaviour {
 
 	void OnEnable() {
 		spitAction.action.Enable();
-		spitAction.action.performed += Charge;
-		spitAction.action.canceled  += Release;
+		spitAction.action.performed += StartCharge;
+		spitAction.action.canceled  += ReleaseCharge;
 
 		drinkAction.action.Enable();
 		drinkAction.action.performed += ToggleDrink;
@@ -56,8 +69,8 @@ public class SpitAndDrink : MonoBehaviour {
 
 	void OnDisable() {
 		spitAction.action.Disable();
-		spitAction.action.performed -= Charge;
-		spitAction.action.canceled  -= Release;
+		spitAction.action.performed -= StartCharge;
+		spitAction.action.canceled  -= ReleaseCharge;
 		
 		drinkAction.action.Disable();
 		drinkAction.action.performed -= ToggleDrink;
@@ -66,17 +79,21 @@ public class SpitAndDrink : MonoBehaviour {
 
 	void FixedUpdate() {
 		if (!_isCharging) return;
-		_chargeTime+= Time.fixedDeltaTime;
+		_chargeTime += Time.fixedDeltaTime;
+		chargeSlider.fillAmount = _chargeTime / maxChargeTime;
 	}
 
-	void Charge(InputAction.CallbackContext context) {
-		_chargeTime = 0f;
-		_isCharging = true;
+	void StartCharge(InputAction.CallbackContext context) {
+		_isCharging             = true;
+		_chargeTime             = 0f;
+		chargeSlider.fillAmount = 0f;
 	}
 
-	void Release(InputAction.CallbackContext context) {
+	void ReleaseCharge(InputAction.CallbackContext context) {
+		if (!_isCharging) return;
 		_isCharging = false;
-		float finalCharge = Mathf.Clamp(_chargeTime, 0.1f, maxChargeTime) / maxChargeTime;
+		chargeSlider.fillAmount = 0;
+		float finalCharge = Mathf.Clamp(_chargeTime, maxChargeTime * minSpitSize, maxChargeTime) / maxChargeTime;
 		Spit(finalCharge);
 	}
 	

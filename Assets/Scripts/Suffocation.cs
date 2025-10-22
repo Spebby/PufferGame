@@ -7,6 +7,7 @@ public class Suffocation : MonoBehaviour {
     PlayerMovementController _playerState;
     [SerializeField] int maxTime = 10;
     bool _isSuffocating;
+    [SerializeField] private GameObject suffocationText;
 
     void Awake() {
         _startingPosition = transform.position;
@@ -16,8 +17,14 @@ public class Suffocation : MonoBehaviour {
 
     void FixedUpdate() {
         // this is indirectly a physics function whether you like it or not.
-        if (!_playerState.InWater) {
+        if (!_playerState.InWater)
+        {
+            suffocationText.SetActive(true);
             StartCoroutine(Suffocate());
+        }
+        else
+        {
+            suffocationText.SetActive(false);
         }
     }
 

@@ -12,10 +12,18 @@ public class PlayerMovementController : MonoBehaviour {
     [SerializeField] float inAirGravity = 1f;
 
     public bool InWater { get; private set; }
-    WaterPool _waterPool; // :(
+    WaterPool _waterPool;
+
+    AudioSource _audioSource; 
+    
+    [Header("Audio")]
+    [SerializeField] AudioClip splashSound;
+    [SerializeField] AudioClip movingInWaterSound;
+    [SerializeField] AudioSource movementLoopSource; 
 
     void Awake() {
         _rigidBody2D = GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>(); 
     }
 
     void OnEnable() {
@@ -35,17 +43,36 @@ public class PlayerMovementController : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        
+        bool isMovingInWater = InWater && _moveDirection2D.sqrMagnitude > 0.01f;
+        
+        if (isMovingInWater && !movementLoopSource.isPlaying) { 
+            movementLoopSource.clip = movingInWaterSound; 
+            movementLoopSource.loop = true; 
+            movementLoopSource.Play(); 
+        } 
+        else if (!isMovingInWater && movementLoopSource.isPlaying) { 
+            movementLoopSource.Stop(); 
+            movementLoopSource.loop = false; 
+        }
+        
         if (!_canMove) return;
         _rigidBody2D.AddForce(_moveDirection2D * moveForce);
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
-        // fyi layer is better than comparing to tag.
         if (!collision.gameObject.CompareTag("Water Pool")) return;
+        
+        bool wasInAir = !InWater; 
+
         _rigidBody2D.gravityScale = 0f;
         _canMove                  = true;
         InWater                   = true;
         _waterPool                = collision.gameObject.GetComponentInParent<WaterPool>();
+
+        if (wasInAir) {
+            _audioSource.PlayOneShot(splashSound); 
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision) {
@@ -54,6 +81,11 @@ public class PlayerMovementController : MonoBehaviour {
         _canMove                  = false;
         InWater                   = false;
         _waterPool                = null;
+        
+        if (movementLoopSource.isPlaying) { 
+            movementLoopSource.Stop(); 
+            movementLoopSource.loop = false; 
+        }
     }
 
     public WaterPool GetWaterPool() {

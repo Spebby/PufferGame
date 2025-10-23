@@ -1599,6 +1599,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 183986811699894415, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 183986811699894415, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5991979191757897600, guid: dac28e2d06b03414fa0a49a8b9faf266, type: 3}
       propertyPath: bigSpitSound
       value: 

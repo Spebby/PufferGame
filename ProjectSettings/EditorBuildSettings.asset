@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/WaterPrototype.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/MainMenu.unity
+    guid: 44762d398ada7e3479cbff781b2543a1
+  - enabled: 1
+    path: Assets/Scenes/LevelPrototype.unity
+    guid: f07a4358815054d9a8119c92fe3ef47b
+  - enabled: 1
+    path: Assets/Scenes/FearPrototype.unity
+    guid: e526f20073969d5649b3d63c30d9b731
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

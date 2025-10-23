@@ -722,7 +722,7 @@ MonoBehaviour:
   startWaterRatio: 0.25
   waterBlobPrefab: {fileID: 6611142775733038333, guid: 16958b6a6642fc246b77d0bed50cf462, type: 3}
   spitForce: 30
-  propulsionForce: 50
+  propulsionForce: 60
   spitCost: 0.1
   minSpitSize: 0.2
   maxChargeTime: 2

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class SpitAndDrink : MonoBehaviour {
 
     [Header("Shared Behaviour")]
     float _waterAmount;
+    [SerializeField] TMP_Text waterSupplyText;
     [SerializeField] float maxWater = 100f;
     [SerializeField, Range(0f, 1f)] float startWaterRatio = 0.25f;
     
@@ -55,6 +57,7 @@ public class SpitAndDrink : MonoBehaviour {
     }
 
     void Update() {
+        waterSupplyText.text = "" + _waterAmount;
         if (!_isDrinking || _waterAmount >= maxWater) return;
         
         Drink();

@@ -57,7 +57,7 @@ public class SpitAndDrink : MonoBehaviour {
     }
 
     void Update() {
-        waterSupplyText.text = "" + _waterAmount;
+        waterSupplyText.text = "" + Mathf.Floor(_waterAmount * 10) * 0.1;
         if (!_isDrinking || _waterAmount >= maxWater) return;
         
         Drink();

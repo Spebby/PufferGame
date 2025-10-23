@@ -1,6 +1,8 @@
-using System;
-using System.Collections; 
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+
 
 public class Monster : MonoBehaviour {
     [SerializeField] float turnRadius;
@@ -10,9 +12,9 @@ public class Monster : MonoBehaviour {
     Vector3 _velocity;
 
     [Header("Audio")] 
-    [SerializeField] private AudioSource audio_Close; 
-    [SerializeField] private AudioSource audio_Far; 
-    [SerializeField] private float roarInterval = 4.0f; 
+    [SerializeField, FormerlySerializedAs("audio_Close")] AudioSource audioClose; 
+    [SerializeField, FormerlySerializedAs("audio_Far")]   AudioSource audioFar; 
+    [SerializeField] float roarInterval = 4.0f; 
 
     void Awake() {
         _target   = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<Transform>();
@@ -23,8 +25,7 @@ public class Monster : MonoBehaviour {
     }
 
     
-    void Start() 
-    {
+    void Start() {
         StartCoroutine(RoarLoop());
     }
 
@@ -43,22 +44,25 @@ public class Monster : MonoBehaviour {
         transform.position += _velocity * Time.fixedDeltaTime;
     }
 
-    public void PlayRoar() 
-    {
-        audio_Close.Play();
-        audio_Far.Play();
+    void PlayRoar() {
+        audioClose.Play();
+        audioFar.Play();
     }
 
-    private IEnumerator RoarLoop() 
-    {
-        while (true)
-        {
+    IEnumerator RoarLoop() {
+        while (true) {
             yield return new WaitForSeconds(roarInterval);
             PlayRoar();
         }
+        // ReSharper disable once IteratorNeverReturns
     }
 
     void OnDrawGizmos() {
         Gizmos.DrawLine(transform.position, _velocity + transform.position);
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (!other.CompareTag("Player")) return;  // ass
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class SpitAndDrink : MonoBehaviour {
 
     [Header("Shared Behaviour")]
     float _waterAmount;
+    [SerializeField] TMP_Text waterSupplyText;
     [SerializeField] float maxWater = 100f;
     [SerializeField, Range(0f, 1f)] float startWaterRatio = 0.25f;
     
@@ -55,6 +57,7 @@ public class SpitAndDrink : MonoBehaviour {
     }
 
     void Update() {
+        waterSupplyText.text = "" + Mathf.Floor(_waterAmount * 10) * 0.1;
         if (!_isDrinking || _waterAmount >= maxWater) return;
         
         Drink();
@@ -107,13 +110,8 @@ public class SpitAndDrink : MonoBehaviour {
         float cost = charge * maxWater * spitCost;
         if (_waterAmount < cost) return;
 
-        if (charge >= bigSpitThreshold) {
-            _audioSource.PlayOneShot(bigSpitSound); 
-        }
-        else {
-            _audioSource.PlayOneShot(smallSpitSound); 
-        }
-        
+        _audioSource.PlayOneShot(charge >= bigSpitThreshold ? bigSpitSound : smallSpitSound);
+
         Vector2 aim = (Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position).normalized;
         GameObject blob = Instantiate(waterBlobPrefab, transform.position + (Vector3)aim * gameObject.transform.localScale.x * 1f, Quaternion.identity);
         

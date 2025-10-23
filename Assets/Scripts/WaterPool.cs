@@ -9,6 +9,8 @@ public class WaterPool : MonoBehaviour {
 	[Header("Volume")]
 	[SerializeField, Min(0f)] float _volume = 5f;
     [SerializeField] float _volumeToHeightRatio = 0.2f;
+
+    [SerializeField] bool _hasVolume = true;
     // I assume that vTHR ratio 0.2 means 1 volume == 20% full?
 
 	[Header("Dev")]
@@ -41,14 +43,17 @@ public class WaterPool : MonoBehaviour {
 		_colliderTransform.localScale = new Vector3(_width, Mathf.Max(_minColliderHeight, _height), 1f);
 	}
 	
-	public bool HasWater(float amount = 0) => _volume >= amount;
+	public bool HasWater(float amount = 0) => !_hasVolume || _volume >= amount;
 
 	public void AddVolume(float delta) {
+		if (!_hasVolume) return;
 		_volume += delta;
 		SetSpriteHeight(_volume * _volumeToHeightRatio);
 	}
 
 	public float ReduceVolume(float delta) {
+		if (!_hasVolume) return delta;
+		
 		float reduction = Mathf.Min(delta, _volume);
 		_volume -= reduction;
 		SetSpriteHeight(_volume * _volumeToHeightRatio);

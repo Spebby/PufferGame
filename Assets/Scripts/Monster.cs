@@ -61,7 +61,7 @@ public class Monster : MonoBehaviour {
         Gizmos.DrawLine(transform.position, _velocity + transform.position);
     }
 
-    void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter2D(Collider2D other) {
         if (!other.CompareTag("Player")) return;  // ass
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
